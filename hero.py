@@ -25,6 +25,18 @@ class Hero:
         # when a hero is created, their current health is
         # always the same as their starting health (no damage taken yet!)
         self.current_health = starting_health
+        self.deaths = 0
+        self.kills = 0
+
+    def add_kill(self, num_kills):
+        ''' Update self.kills by num_kills amount'''
+        self.kills += num_kills
+
+    def add_death(self, num_deaths):
+        ''' Update deaths with num_deaths'''
+        # TODO: This method should add the number of deaths to self.deaths
+        self.deaths += num_deaths
+
 
     def add_ability(self, ability):
         ''' Add ability to abilities list '''
@@ -92,6 +104,7 @@ class Hero:
 
     def fight(self, opponent):  
         ''' Current Hero will take turns fighting the opponent hero passed in.
+            ~~ will also return True if the fight is won or false if the fight is lost ~~
         '''
         # TODO: Fight each hero until a victor emerges.
         # Phases to implement:
@@ -109,12 +122,22 @@ class Hero:
             print(self.current_health)
             if self.is_alive() == False:
                 print(f"{opponent.name} won!")
-                break
+                opponent.add_kill(1)
+                self.add_death(1)
+                return False
             
             opponent.take_damage(self.attack())
             if opponent.is_alive() == False:
                 print(f"{self.name} won!")
-                break
+                self.add_kill(1)
+                opponent.add_death(1)
+                return True
+
+        # TODO: Refactor this method to update the following:
+        # 1) the number of kills the hero (self) has when the opponent dies.
+        # 2) then number of kills the opponent has when the hero (self) dies
+        # 3) the number of deaths of the opponent if they die    in the fight
+        # 4) the number of deaths of the hero (self) if they die in the fight
 
 
 if __name__ == "__main__":
