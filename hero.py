@@ -70,7 +70,8 @@ class Hero:
         damage -= self.defend()
         if damage < 0:
             damage = 0
-        self.current_health -= 0
+        self.current_health -= damage
+        print(f"{self.name} took {damage} and is at {self.current_health} health!")
 
     def is_alive(self):  
         '''Return True or False depending on whether the hero is alive or not.
@@ -78,7 +79,7 @@ class Hero:
         # TODO: Check the current_health of the hero.
         # if it is <= 0, then return False. Otherwise, they still have health
         # and are therefore alive, so return True
-        return self.current_health <= 0
+        return self.current_health >= 0
 
     def fight(self, opponent):  
         ''' Current Hero will take turns fighting the opponent hero passed in.
@@ -90,46 +91,36 @@ class Hero:
             print("Draw")
             return
         # 1) else, start the fighting loop until a hero has won
-        fighting = True
-        while fighting:
-        # 2) the hero (self) and their opponent must attack each other and each must take damage from the other's attack
+        while True:
+            # 2) the hero (self) and their opponent must attack each other and each must take damage from the other's attack
+            # 3) After each attack, check if either the hero (self) or the opponent is alive   
+            # 4) if one of them has died, print "HeroName won!" replacing HeroName with the name of the hero, and end the fight loop
+            self.take_damage(opponent.attack())
+            print(self.is_alive())
+            print(self.current_health)
+            if self.is_alive() == False:
+                print(f"{opponent.name} won!")
+                break
             
-        # 3) After each attack, check if either the hero (self) or the opponent is alive
-        
-        # 4) if one of them has died, print "HeroName won!" replacing HeroName with the name of the hero, and end the fight loop
+            opponent.take_damage(self.attack())
+            if opponent.is_alive() == False:
+                print(f"{self.name} won!")
+                break
 
 
 if __name__ == "__main__":
     # If you run this file from the terminal
     # this block is executed.
-    my_hero = Hero("Grace Hopper", 200)
-    print(my_hero.name)
-    print(my_hero.current_health)
 
+    print("FIGHT!!!")
     hero1 = Hero("Wonder Woman")
     hero2 = Hero("Dumbledore")
+    ability1 = Ability("Super Speed", 300)
+    ability2 = Ability("Super Eyes", 130)
+    ability3 = Ability("Wizard Wand", 80)
+    ability4 = Ability("Wizard Beard", 20)
+    hero1.add_ability(ability1)
+    hero1.add_ability(ability2)
+    hero2.add_ability(ability3)
+    hero2.add_ability(ability4)
     hero1.fight(hero2)
-
-    ability = Ability("Great Debugging", 50)
-    hero = Hero("Grace Hopper", 200)
-    hero.add_ability(ability)
-    print(hero.abilities)
-
-    ability = Ability("Great Debugging", 50)
-    another_ability = Ability("Smarty Pants", 90)
-    hero = Hero("Grace Hopper", 200)
-    hero.add_ability(ability)
-    hero.add_ability(another_ability)
-    print(hero.attack())
-
-    hero = Hero("Grace Hopper", 200)
-    shield = Armor("Shield", 50)
-    hero.add_armor(shield)
-    hero.take_damage(50)
-    print(hero.current_health)
-
-    hero = Hero("Grace Hopper", 200)
-    hero.take_damage(150)
-    print(hero.is_alive())
-    hero.take_damage(15000)
-    print(hero.is_alive())
