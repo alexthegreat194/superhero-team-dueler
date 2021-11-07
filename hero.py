@@ -1,6 +1,7 @@
 import random
 from ability import Ability
 from armor import Armor
+from weapon import Weapon
 
 class Hero:
     # We want our hero to have a default "starting_health",
@@ -30,6 +31,14 @@ class Hero:
 
         # We use the append method to add ability objects to our list.
         self.abilities.append(ability)
+
+    def add_weapon(self, weapon):
+        '''Add weapon to self.abilities'''
+        # TODO: This method will append the weapon object passed in as an
+        # argument to self.abilities.
+        # This means that self.abilities will be a list of
+        # abilities and weapons.
+        self.abilities.append(weapon)
 
     def attack(self):
         '''Calculate the total damage from all ability attacks.
@@ -124,3 +133,8 @@ if __name__ == "__main__":
     hero2.add_ability(ability3)
     hero2.add_ability(ability4)
     hero1.fight(hero2)
+
+    hero = Hero("Wonder Woman")
+    weapon = Weapon("Lasso of Truth", 90)
+    hero.add_weapon(weapon)
+    print(hero.attack())
